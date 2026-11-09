@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>我的網頁作品集 | Mobile Portfolio</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Noto Sans TC -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: #090d16;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.12) 0px, transparent 50%),
+        radial-gradient(at 50% 50%, rgba(15, 23, 42, 0.8) 0px, transparent 100%);
+      min-height: 100vh;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* 隱藏滾動條提升手機視覺質感 */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* 按鈕觸控微反饋 */
+    .touch-press:active {
+      transform: scale(0.97);
+    }
+  </style>
+</head>
+<body class="text-slate-100 flex flex-col justify-between pb-24 md:pb-12">
+
+  <!-- =============================== -->
+  <!-- 1. 手機優先頂部固定導覽列 (Sticky Header) -->
+  <!-- =============================== -->
+  <nav class="sticky top-0 z-50 bg-slate-900/85 backdrop-blur-md border-b border-slate-800/80 px-4 py-3">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <!-- 品牌標誌 -->
+      <a href="#" class="flex items-center gap-2 group">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white text-sm shadow-md shadow-indigo-500/20">
+          <i class="fa-solid fa-code"></i>
+        </div>
+        <span class="font-bold text-base sm:text-lg tracking-tight bg-gradient-to-r from-white via-slate-100 to-indigo-200 bg-clip-text text-transparent">
+          我的網頁作品集
+        </span>
+      </a>
+
+      <!-- 導覽連結 (作品目錄 / 關於我) -->
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <a href="#projects" class="px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5 touch-press">
+          <i class="fa-solid fa-grid-2 text-indigo-400"></i>
+          <span>作品目錄</span>
+        </a>
+        <a href="#about" class="px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5 touch-press">
+          <i class="fa-solid fa-user text-purple-400"></i>
+          <span>關於我</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- =============================== -->
+  <!-- 主內容容器 -->
+  <!-- =============================== -->
+  <main class="max-w-4xl mx-auto w-full px-4 pt-6 space-y-10">
+
+    <!-- Hero 歡迎大標題區塊 -->
+    <header class="text-center space-y-3 pt-2">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-400/20 text-indigo-300 text-xs font-semibold">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>Mobile-First Portfolio 2026</span>
+      </div>
+      
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white">
+        我的網頁作品集
+      </h1>
+      
+      <p class="text-slate-400 text-xs sm:text-sm max-w-lg mx-auto leading-relaxed">
+        專為手機端精心調優的互動體驗，匯集實用網頁系統、客製化桌面小工具與 AI 音訊創作。
+      </p>
+
+      <!-- 手機端快捷跳轉按鈕 -->
+      <div class="flex items-center justify-center gap-3 pt-2">
+        <a href="#projects" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs sm:text-sm transition shadow-lg shadow-indigo-600/30 flex items-center gap-2 touch-press">
+          <i class="fa-solid fa-compass"></i>
+          <span>瀏覽作品目錄</span>
+        </a>
+        <a href="#about" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold text-xs sm:text-sm transition flex items-center gap-2 touch-press">
+          <i class="fa-regular fa-id-badge"></i>
+          <span>了解創作者</span>
+        </a>
+      </div>
+    </header>
+
+
+    <!-- =============================== -->
+    <!-- 2. 作品目錄 (Projects Catalog) -->
+    <!-- =============================== -->
+    <section id="projects" class="space-y-5 scroll-mt-20">
+      
+      <!-- 目錄區塊標題與篩選列 -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-7 h-7 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-bold text-white">作品目錄</h2>
+          </div>
+          <span class="text-xs text-slate-400 bg-slate-800/80 px-2.5 py-1 rounded-full border border-slate-700/60">
+            共 4 件精選作品
+          </span>
+        </div>
+
+        <!-- 分類標籤切換器 (手機友善水平滾動) -->
+        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+          <button onclick="filterCategory('all')" id="btn-all" class="filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-indigo-600 text-white shadow-sm transition whitespace-nowrap touch-press">
+            全部 (4)
+          </button>
+          <button onclick="filterCategory('web')" id="btn-web" class="filter-btn px-3.5 py-1.5 rounded-full text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition whitespace-nowrap touch-press">
+            網頁應用 (3)
+          </button>
+          <button onclick="filterCategory('audio')" id="btn-audio" class="filter-btn px-3.5 py-1.5 rounded-full text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition whitespace-nowrap touch-press">
+            音訊創作 (1)
+          </button>
+        </div>
+      </div>
+
+      <!-- 作品列表卡片容器 (手機優先單欄直式排版) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5" id="projects-grid">
+
+        <!-- =============================== -->
+        <!-- 作品卡片 1：楊老大飲料店點餐系統 -->
+        <!-- =============================== -->
+        <article class="project-card bg-slate-800/80 border border-slate-700/80 rounded-2xl overflow-hidden flex flex-col justify-between shadow-lg shadow-black/30 hover:border-amber-500/60 transition-all duration-300 group" data-category="web">
+          <div>
+            <!-- 小圖卡 Visual Banner -->
+            <div class="h-36 sm:h-40 bg-gradient-to-br from-amber-600 via-amber-700 to-amber-950 p-4 relative overflow-hidden flex flex-col justify-between">
+              <!-- 裝飾背景圖案 -->
+              <div class="absolute -right-6 -bottom-6 text-amber-400/10 text-9xl pointer-events-none">
+                <i class="fa-solid fa-mug-hot"></i>
+              </div>
+              <!-- 頂部徽章標籤 -->
+              <div class="flex items-center justify-between z-10">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-black/40 backdrop-blur-md border border-amber-300/30 text-amber-200 text-xs font-bold">
+                  <i class="fa-solid fa-utensils text-xs"></i> 商業電商 / POS
+                </span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-black/30 text-amber-100">
+                  RWD 響應式
+                </span>
+              </div>
+              <!-- 底部大圖示與專案簡稱 -->
+              <div class="flex items-center gap-3 z-10">
+                <div class="w-12 h-12 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center text-2xl font-black shadow-md group-hover:scale-105 transition-transform">
+                  <i class="fa-solid fa-glass-water"></i>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold text-white drop-shadow-sm">楊老大飲料店</h3>
+                  <p class="text-amber-200 text-xs">線上點餐 & 客製化菜單系統</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 卡片詳細內容區 -->
+            <div class="p-5 space-y-4">
+              <!-- 100字簡介 -->
+              <div>
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1 flex items-center gap-1.5">
+                  <i class="fa-solid fa-align-left text-amber-400"></i> 作品簡介
+                </h4>
+                <p class="text-sm text-slate-300 leading-relaxed bg-slate-900/40 p-3 rounded-xl border border-slate-800">
+                  專為手搖茶飲店打造的完整響應式線上點餐平台。顧客可自由客製冰塊、甜度與加料選項，即時計算消費金額並支援購物車管理。送出後自動整合遠端試算表進行訂單歸檔，大幅提升小型店家接單與結帳效率。
+                </p>
+              </div>
+
+              <!-- 使用 API 說明 -->
+              <div>
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5 flex items-center gap-1.5">
+                  <i class="fa-solid fa-network-wired text-indigo-400"></i> 使用 API 與技術
+                </h4>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="text-xs px-2.5 py-1 rounded-lg bg-indigo-500/10 border border-indigo-400/25 text-indigo-300">
+                    <i class="fa-brands fa-google mr-1 text-[10px]"></i> Google Apps Script (GAS) API
+                  </span>
+                  <span class="text-xs px-2.5 py-1 rounded-lg bg-indigo-500/10 border border-indigo-400/25 text-indigo-300">
+                    Fetch API (非同步無阻跨域)
+                  </span>
+                  <span class="text-xs px-2.5 py-1 rounded-lg bg-indigo-500/10 border border-indigo-400/25 text-indigo-300">
+                    DOM Event Manipulation API
+                  </span>
+                </div>
+              </div>
+
+              <!-- 應用場景 -->
+              <div>
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5 flex items-center gap-1.5">
+                  <i class="fa-solid fa-bullseye text-emerald-400"></i> 應用場景
+                </h4>
+                <ul class="text-xs text-slate-300 space-y-1 list-disc list-inside">
+                  <li>手搖茶飲店、咖啡輕食店免安裝式顧客自助點餐</li>
+                  <li>辦公室同仁團購訂單快速統計與無紙化總整</li>
+                  <li>市集快閃攤位或活動外送訂購即時彙整</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- 打開按鈕 (加大觸控區域，手機單手好按) -->
+          <div class="p-5 pt-0">
+            <a href="Web/drink_order/Order.html" target="_blank" class="w-full min-h-[46px] py-2.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-slate-950 font-bold text-sm transition-all shadow-md shadow-amber-500/20 flex items-center justify-center gap-2 touch-press">
+              <span>打開作品 (開啟點餐系統)</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+            </a>
+          </div>
+        </article>
+
+        <!-- =============================== -->
+        <!-- 作品卡片 2：明星簡潔時鐘桌布 -->
+        <!-- =============================== -->
+        <article class="project-card bg-slate-800/80 border border-slate-700/80 rounded-2xl overflow-hidden flex flex-col justify-between shadow-lg shadow-black/30 hover:border-cyan-500/60 transition-all duration-300 group" data-category="web">
+          <div>
+            <!-- 小圖卡 Visual Banner -->
+            <div class="h-36 sm:h-40 bg-gradient-to-br from-cyan-600 via-teal-700 to-slate-950 p-4 relative overflow-hidden flex flex-col justify-between">
+              <div class="absolute -right-6 -bottom-6 text-cyan-400/10 text-9xl pointer-events-none">
+                <i class="fa-regular fa-clock"></i>
+              </div>
+              <div class="flex items-center justify-between z-10">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-black/40 backdrop-blur-md border border-cyan-300/30 text-cyan-200 text-xs font-bold">
+                  <i class="fa-solid fa-desktop text-xs"></i> 桌面實用工具
+                </span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-black/30 text-cyan-100">
+                  全螢幕互動
+                </span>
+              </div>
+              <div class="flex items-center gap-3 z-10">
+                <div class="w-12 h-12 rounded-xl bg-cyan-400 text-slate-950 flex items-center justify-center text-2xl font-black shadow-md group-hover:scale-105 transition-transform">
+                  <i class="fa-regular fa-hourglass-half"></i>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold text-white drop-shadow-sm">明星簡潔時鐘桌布</h3>
+                  <p class="text-cyan-200 text-xs">沉浸式動態時鐘與輪播桌布</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 卡片詳細內容區 -->
+            <div class="p-5 space-y-4">
+              <!-- 100字簡介 -->
+              <div>
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1 flex items-center gap-1.5">
+                  <i class="fa-solid fa-align-left text-cyan-400"></i> 作品簡介
+                </h4>
+                <p class="text-sm text-slate-300 leading-relaxed bg-slate-900/40 p-3 rounded-xl border border-slate-800">
+                  打造極簡沉浸式數位時鐘與動態桌面展示小工具。支援12/24小時制切換、即時秒數與完整日期星期資訊。內建高畫質桌布自動輪播、模糊度及透明遮罩自訂調節功能，兼具實用時鐘與優雅螢幕保護桌布。
+                </p>
+              </div>
+
+              <!-- 使用 API 說明 -->
+              <div>
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5 flex items-center gap-1.5">
+                  <i class="fa-solid fa-network-wired text-indigo-400"></i> 使用 API 與技術
+                </h4>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="text-xs px-2.5 py-1 rounded-lg bg-indigo-500/10 border border-indigo-400/25 text-indigo-300">
+                    JavaScript Date & Timing API
+                  </span>
+                  <span class="text-xs px-2.5 py-1 rounded-lg bg-indigo-500/10 border border-indigo-400/25 text-indigo-300">
+                    Fetch API (動態讀取外部圖庫 CSV)
+                  </span>
+                  <span class="text-xs px-2.5 py-1 rounded-lg bg-indigo-500/10 border border-indigo-400/25 text-indigo-300">
+                    CSS Backdrop Filter & Keyboard Event API
+                  </span>
+                </div>
+              </div>
+
+              <!-- 應用場景 -->
+              <div>
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5 flex items-center gap-1.5">
+                  <i class="fa-solid fa-bullseye text-emerald-400"></i> 應用場景
+                </h4>
+                <ul class="text-xs text-slate-300 space-y-1 list-disc list-inside">
+                  <li>辦公室第二螢幕、書桌平板常駐翻頁式時鐘相框</li>
+                  <li>簡報演講中場休息投影或展覽迎賓動態視覺</li>
+                  <li>沉浸式個人專注工作番茄鐘輔助計時介面</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- 打開按鈕 -->
+          <div class="p-5 pt-0">
+            <a href="Web/clock_widget/Snoopy_desktop.html" target="_blank" class="w-full min-h-[46px] py-2.5 px-4 rounded-xl bg-cyan-500 hover:bg-cyan-400 active:bg-cyan-600 text-slate-950 font-bold text-sm transition-all shadow-md shadow-cyan-500/20 flex items-center justify-center gap-2 touch-press">
+              <span>打開作品 (開啟時鐘桌布)</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+            </a>
+          </div>
+        </article>
+
+        <!-- =============================== -->
+        <!-- 作品卡片 3：台灣即時天氣氣象站 -->
+        <!-- =============================== -->
+        <article class="project-card bg-slate-800/80 border border-slate-700/80 rounded-2xl overflow-hidden flex flex-col justify-between shadow-lg shadow-black/30 hover:border-blue-500/60 transition-all duration-300 group" data-category="web">
+          <div>
+            <!-- 小圖卡 Visual Banner -->
+            <div class="h-36 sm:h-40 bg-gradient-to-br from-blue-600 via-indigo-700 to-slate-950 p-4 relative overflow-hidden flex flex-col justify-between">
+              <div class="absolute -right-6 -bottom-6 text-blue-400/10 text-9xl pointer-events-none">
+                <i class="fa-solid fa-cloud-sun-rain"></i>
+              </div>
+              <div class="flex items-center justify-between z-10">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-black/40 backdrop-blur-md border border-blue-300/30 text-blue-200 text-xs font-bold">
+                  <i class="fa-solid fa-temperature-half text-xs"></i> 氣象儀表板
+                </span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-black/30 text-blue-100">
+                  玻璃擬態
+                </span>
+              </div>
+              <div class="flex items-center gap-3 z-10">
+                <div class="w-12 h-12 rounded-xl bg-blue-400 text-slate-950 flex items-center justify-center text-2xl font-black shadow-md group-hover:scale-105 transition-transform">
+                  <i class="fa-solid fa-cloud-sun"></i>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold text-white drop-shadow-sm">台灣即時天氣氣象站</h3>
+                  <p class="text-blue-200 text-xs">全台22縣市精準氣候預報</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 卡片詳細內容區 -->
+            <div class="p-5 space-y-4">
+              <!-- 100字簡介 -->
+              <div>
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1 flex items-center gap-1.5">
+                  <i class="fa-solid fa-align-left text-blue-400"></i> 作品簡介
+                </h4>
+                <p class="text-sm text-slate-300 leading-relaxed bg-slate-900/40 p-3 rounded-xl border border-slate-800">
+                  採用現代玻璃擬態風格的全台即時天氣儀表板。使用者可快速切換22個縣市，即時掌握最新溫度、體感、濕度、紫外線與降雨機率，並呈現未來多日氣溫走勢圖，讓每日出門穿著與戶外行程規劃變得一目了然。
+                </p>
+              </div>
+
+              <!-- 使用 API 說明 -->
+              <div>
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5 flex items-center gap-1.5">
+                  <i class="fa-solid fa-network-wired text-indigo-400"></i> 使用 API 與技術
+                </h4>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="text-xs px-2.5 py-1 rounded-lg bg-indigo-500/10 border border-indigo-400/25 text-indigo-300">
+                    Open-Meteo Weather API (全球即時預報)
+                  </span>
+                  <span class="text-xs px-2.5 py-1 rounded-lg bg-indigo-500/10 border border-indigo-400/25 text-indigo-300">
+                    Fetch API & Async/Await 解析
+                  </span>
+                  <span class="text-xs px-2.5 py-1 rounded-lg bg-indigo-500/10 border border-indigo-400/25 text-indigo-300">
+                    台灣全縣市經緯座標映射演算法
+                  </span>
+                </div>
+              </div>
+
+              <!-- 應用場景 -->
+              <div>
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5 flex items-center gap-1.5">
+                  <i class="fa-solid fa-bullseye text-emerald-400"></i> 應用場景
+                </h4>
+                <ul class="text-xs text-slate-300 space-y-1 list-disc list-inside">
+                  <li>每日早晨上班、上課前穿著搭配與雨具攜帶查詢</li>
+                  <li>週末跨縣市家庭出遊、露營或登山即時天候掌握</li>
+                  <li>外送員、業務通勤外勤即時降雨與溫差避險參考</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- 打開按鈕 -->
+          <div class="p-5 pt-0">
+            <a href="Web/weather_station/weather.html" target="_blank" class="w-full min-h-[46px] py-2.5 px-4 rounded-xl bg-blue-500 hover:bg-blue-400 active:bg-blue-600 text-slate-950 font-bold text-sm transition-all shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 touch-press">
+              <span>打開作品 (開啟天氣氣象站)</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+            </a>
+          </div>
+        </article>
+
+        <!-- =============================== -->
+        <!-- 作品卡片 4：AI 音樂創作 (Wendy) -->
+        <!-- =============================== -->
+        <article class="project-card bg-slate-800/80 border border-slate-700/80 rounded-2xl overflow-hidden flex flex-col justify-between shadow-lg shadow-black/30 hover:border-purple-500/60 transition-all duration-300 group" data-category="audio">
+          <div>
+            <!-- 小圖卡 Visual Banner -->
+            <div class="h-36 sm:h-40 bg-gradient-to-br from-purple-600 via-violet-700 to-slate-950 p-4 relative overflow-hidden flex flex-col justify-between">
+              <div class="absolute -right-6 -bottom-6 text-purple-400/10 text-9xl pointer-events-none">
+                <i class="fa-solid fa-music"></i>
+              </div>
+              <div class="flex items-center justify-between z-10">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-black/40 backdrop-blur-md border border-purple-300/30 text-purple-200 text-xs font-bold">
+                  <i class="fa-solid fa-headphones text-xs"></i> 多媒體創作
+                </span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-black/30 text-purple-100">
+                  AI Music
+                </span>
+              </div>
+              <div class="flex items-center gap-3 z-10">
+                <div class="w-12 h-12 rounded-xl bg-purple-400 text-slate-950 flex items-center justify-center text-2xl font-black shadow-md group-hover:scale-105 transition-transform">
+                  <i class="fa-solid fa-compact-disc animate-spin" style="animation-duration: 6s;"></i>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold text-white drop-shadow-sm">AI_music_Wendy</h3>
+                  <p class="text-purple-200 text-xs">AI 生成原創氛圍音樂</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 卡片詳細內容區 -->
+            <div class="p-5 space-y-4">
+              <!-- 100字簡介 -->
+              <div>
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1 flex items-center gap-1.5">
+                  <i class="fa-solid fa-align-left text-purple-400"></i> 作品簡介
+                </h4>
+                <p class="text-sm text-slate-300 leading-relaxed bg-slate-900/40 p-3 rounded-xl border border-slate-800">
+                  融合生成式 AI 與創意編曲的多媒體音樂創作。曲風兼具節奏律動與療癒氛圍，透過精確提示詞調校樂器層次與旋律起伏。網頁內建無障礙 HTML5 音訊控制元件，支援隨選即聽、進度調整與一鍵無損音質下載。
+                </p>
+              </div>
+
+              <!-- 內嵌線上試聽控制元件 -->
+              <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 space-y-1.5">
+                <span class="text-[11px] text-slate-400 font-medium block">
+                  <i class="fa-solid fa-play text-purple-400 mr-1"></i> 即時線上試聽：
+                </span>
+                <audio controls class="w-full h-9 rounded-lg bg-slate-950">
+                  <source src="audio/AI_music_Wendy.mp3" type="audio/mpeg">
+                  您的手機瀏覽器不支援 HTML5 音訊播放。
+                </audio>
+              </div>
+
+              <!-- 使用 API 說明 -->
+              <div>
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5 flex items-center gap-1.5">
+                  <i class="fa-solid fa-network-wired text-indigo-400"></i> 使用 API 與技術
+                </h4>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="text-xs px-2.5 py-1 rounded-lg bg-indigo-500/10 border border-indigo-400/25 text-indigo-300">
+                    HTML5 Media Audio API
+                  </span>
+                  <span class="text-xs px-2.5 py-1 rounded-lg bg-indigo-500/10 border border-indigo-400/25 text-indigo-300">
+                    Browser Binary Streaming / Blob Download
+                  </span>
+                  <span class="text-xs px-2.5 py-1 rounded-lg bg-indigo-500/10 border border-indigo-400/25 text-indigo-300">
+                    Generative Music Prompt Pipeline
+                  </span>
+                </div>
+              </div>
+
+              <!-- 應用場景 -->
+              <div>
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5 flex items-center gap-1.5">
+                  <i class="fa-solid fa-bullseye text-emerald-400"></i> 應用場景
+                </h4>
+                <ul class="text-xs text-slate-300 space-y-1 list-disc list-inside">
+                  <li>自媒體短影音、YouTube 或 Podcast 節目免版稅片頭 BGM</li>
+                  <li>沉浸式編程、讀書與深度專注時之氛圍療癒背景音樂</li>
+                  <li>數位產品互動展示、品牌形象短片配樂素材</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- 打開按鈕 -->
+          <div class="p-5 pt-0">
+            <a href="audio/AI_music_Wendy.mp3" target="_blank" class="w-full min-h-[46px] py-2.5 px-4 rounded-xl bg-purple-500 hover:bg-purple-400 active:bg-purple-600 text-slate-950 font-bold text-sm transition-all shadow-md shadow-purple-500/20 flex items-center justify-center gap-2 touch-press">
+              <span>打開作品 (開啟/下載音訊檔)</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+
+    <!-- =============================== -->
+    <!-- 3. 關於我 (About Me) 區塊 -->
+    <!-- =============================== -->
+    <section id="about" class="space-y-4 scroll-mt-20 pt-4 border-t border-slate-800/80">
+      <div class="flex items-center gap-2.5 mb-2">
+        <div class="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-sm">
+          <i class="fa-solid fa-user-astronaut"></i>
+        </div>
+        <h2 class="text-xl sm:text-2xl font-bold text-white">關於我</h2>
+      </div>
+
+      <!-- 關於我資訊卡片 -->
+      <div class="bg-gradient-to-b from-slate-800/90 to-slate-900/90 border border-slate-700/80 rounded-2xl p-5 sm:p-7 shadow-xl shadow-black/20 space-y-6">
+        
+        <!-- 頭像與身份介紹 -->
+        <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-center sm:text-left">
+          <div class="relative">
+            <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden ring-4 ring-purple-500/30 shadow-xl bg-slate-800 flex items-center justify-center">
+              <img src="assets/Wendy_AI.png" alt="Wendy AI" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\'fa-solid fa-user-astronaut text-4xl text-purple-400\'></i>';">
+            </div>
+            <!-- 在線狀態徽章 -->
+            <span class="absolute -bottom-1 -right-1 flex h-4 w-4">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-slate-900"></span>
+            </span>
+          </div>
+
+          <div class="space-y-1.5 flex-1">
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-purple-500/10 border border-purple-400/30 text-purple-300 text-xs font-semibold">
+              <i class="fa-solid fa-sparkles text-amber-400"></i> AI Frontend Creator
+            </div>
+            <h3 class="text-2xl font-black text-white">Wendy (溫蒂)</h3>
+            <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+              熱衷於結合最新生成式 AI 技術與前端互動體驗，致力於將多元想法轉化為直覺、高效且富具溫度的實用網頁產品。
+            </p>
+          </div>
+        </div>
+
+        <!-- 技能專長標籤群 -->
+        <div class="space-y-2">
+          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+            <i class="fa-solid fa-code text-indigo-400"></i> 核心技能與技術棧 (Core Skills)
+          </h4>
+          <div class="flex flex-wrap gap-1.5">
+            <span class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-slate-200 text-xs">HTML5 & RWD</span>
+            <span class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-slate-200 text-xs">Tailwind CSS</span>
+            <span class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-slate-200 text-xs">JavaScript (ES6+)</span>
+            <span class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-slate-200 text-xs">RESTful APIs 串接</span>
+            <span class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-slate-200 text-xs">Google Apps Script</span>
+            <span class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-slate-200 text-xs">AI Prompt Engineering</span>
+            <span class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-slate-200 text-xs">多媒體與音訊整合</span>
+          </div>
+        </div>
+
+        <!-- 創作理念 -->
+        <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 space-y-1">
+          <span class="text-xs text-indigo-400 font-bold block flex items-center gap-1.5">
+            <i class="fa-solid fa-quote-left"></i> 創作座右銘
+          </span>
+          <p class="text-xs sm:text-sm text-slate-300 italic leading-relaxed">
+            「用 AI 賦予想法形體，用代碼打造貼心體驗。專注於手機端的每一處細節，創造有價值的小巧思。」
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =============================== -->
+  <!-- 4. 頁尾資訊 -->
+  <!-- =============================== -->
+  <footer class="mt-12 py-8 border-t border-slate-800 text-center text-slate-500 text-xs space-y-2 px-4">
+    <p class="font-medium text-slate-400">我的網頁作品集 · Mobile-First Architecture</p>
+    <p>© 2026 Wendy. 保留所有創作權利。</p>
+  </footer>
+
+  <!-- =============================== -->
+  <!-- 5. 手機端底部常駐捷徑列 (Bottom Nav Bar) -->
+  <!-- =============================== -->
+  <div class="fixed bottom-0 inset-x-0 z-40 bg-slate-900/95 backdrop-blur-lg border-t border-slate-800 py-2 px-6 flex items-center justify-around md:hidden shadow-2xl">
+    <a href="#" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition touch-press">
+      <i class="fa-solid fa-house text-base"></i>
+      <span class="text-[10px]">首頁置頂</span>
+    </a>
+    <a href="#projects" class="flex flex-col items-center gap-1 text-indigo-400 hover:text-indigo-300 transition touch-press">
+      <i class="fa-solid fa-grid-2 text-base"></i>
+      <span class="text-[10px] font-bold">作品目錄</span>
+    </a>
+    <a href="#about" class="flex flex-col items-center gap-1 text-purple-400 hover:text-purple-300 transition touch-press">
+      <i class="fa-solid fa-user text-base"></i>
+      <span class="text-[10px] font-bold">關於我</span>
+    </a>
+  </div>
+
+  <!-- 分類篩選簡單純 JS 腳本 -->
+  <script>
+    function filterCategory(category) {
+      const cards = document.querySelectorAll('.project-card');
+      const buttons = document.querySelectorAll('.filter-btn');
+
+      // 更新按鈕樣式
+      buttons.forEach(btn => {
+        btn.classList.remove('bg-indigo-600', 'text-white');
+        btn.classList.add('bg-slate-800', 'text-slate-300');
+      });
+
+      const activeBtn = document.getElementById(`btn-${category}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-slate-800', 'text-slate-300');
+        activeBtn.classList.add('bg-indigo-600', 'text-white');
+      }
+
+      // 切換卡片顯示
+      cards.forEach(card => {
+        if (category === 'all' || card.dataset.category === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>

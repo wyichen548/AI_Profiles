@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>明星簡潔時鐘桌布</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@200;400;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+      user-select: none;
+    }
+    .font-time {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    /* 模糊背景層動畫過渡 */
+    .bg-transition {
+      transition: background-image 1s ease-in-out, filter 0.5s ease, opacity 0.5s ease;
+    }
+    /* 自訂捲軸 */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.1);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body class="bg-black text-white h-screen w-screen relative overflow-hidden flex items-center justify-center">
+
+  <!-- 背景圖片容器 (雙層實現平滑切換) -->
+  <div id="bg-layer-1" class="absolute inset-0 bg-cover bg-center bg-no-repeat bg-transition opacity-100 scale-105"></div>
+  <div id="bg-layer-2" class="absolute inset-0 bg-cover bg-center bg-no-repeat bg-transition opacity-0 scale-105"></div>
+
+  <!-- 遮罩層：提升文字閱讀品質與調整亮度 -->
+  <div id="overlay" class="absolute inset-0 bg-black/40 backdrop-blur-[2px] transition-all duration-500"></div>
+
+  <!-- 主畫面內容 (數字時鐘與日期) -->
+  <main class="relative z-10 flex flex-col items-center justify-center text-center p-6 cursor-default">
+    <!-- 時間顯示 -->
+    <div id="clock-container" class="drop-shadow-2xl">
+      <h1 id="time-display" class="font-time text-7xl sm:text-8xl md:text-9xl font-extralight tracking-tight text-white drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]">
+        00:00:00
+      </h1>
+    </div>
+
+    <!-- 日期與星期顯示 -->
+    <div id="date-display" class="mt-4 text-lg sm:text-2xl font-light tracking-widest text-white/90 drop-shadow-md">
+      ---- 年 -- 月 -- 日 星期 -
+    </div>
+
+    <!-- 圖片來源標示 / 頁碼標示 -->
+    <div id="image-info" class="mt-6 text-xs sm:text-sm tracking-wider text-white/60 bg-black/30 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/10 transition-opacity duration-300 opacity-0 hover:opacity-100">
+      載入中...
+    </div>
+  </main>
+
+  <!-- 齒輪按鈕 (設定選單入口) -->
+  <button id="gear-btn" aria-label="設定" class="absolute top-6 right-6 z-30 p-3 rounded-full bg-black/20 hover:bg-black/50 text-white/70 hover:text-white backdrop-blur-md border border-white/10 transition-all duration-300 hover:rotate-90">
+    <i data-lucide="settings" class="w-6 h-6"></i>
+  </button>
+
+  <!-- 上一張 / 下一張 快速切換按鈕 (簡潔隱藏式) -->
+  <button id="prev-btn" aria-label="上一張" class="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-black/10 hover:bg-black/40 text-white/30 hover:text-white backdrop-blur-sm transition-all duration-300 opacity-0 hover:opacity-100 focus:opacity-100">
+    <i data-lucide="chevron-left" class="w-8 h-8"></i>
+  </button>
+  <button id="next-btn" aria-label="下一張" class="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-black/10 hover:bg-black/40 text-white/30 hover:text-white backdrop-blur-sm transition-all duration-300 opacity-0 hover:opacity-100 focus:opacity-100">
+    <i data-lucide="chevron-right" class="w-8 h-8"></i>
+  </button>
+
+  <!-- 設定側邊欄 Drawer / Modal -->
+  <div id="settings-panel" class="fixed inset-y-0 right-0 z-40 w-full sm:w-96 bg-slate-900/90 backdrop-blur-xl border-l border-white/10 p-6 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col justify-between shadow-2xl">
+    
+    <div>
+      <!-- 標題欄 -->
+      <div class="flex items-center justify-between pb-4 border-b border-white/10">
+        <div class="flex items-center space-x-2">
+          <i data-lucide="sliders" class="w-5 h-5 text-indigo-400"></i>
+          <h2 class="text-lg font-semibold text-white">桌布與時鐘設定</h2>
+        </div>
+        <button id="close-settings-btn" class="p-1 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-colors">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+
+      <!-- 設定選單內容 -->
+      <div class="mt-6 space-y-6 overflow-y-auto max-h-[calc(100vh-160px)] pr-1">
+        
+        <!-- 輪播設定 -->
+        <div class="space-y-3">
+          <h3 class="text-xs font-semibold text-indigo-400 uppercase tracking-wider">桌布輪播</h3>
+          
+          <div class="flex items-center justify-between">
+            <label for="auto-play-toggle" class="text-sm text-gray-200">自動輪播照片</label>
+            <input type="checkbox" id="auto-play-toggle" class="w-4 h-4 accent-indigo-500 rounded cursor-pointer" checked>
+          </div>
+
+          <div class="space-y-1">
+            <div class="flex justify-between text-xs text-gray-400">
+              <span>切換間隔 (秒)</span>
+              <span id="interval-val" class="text-indigo-300">10 秒</span>
+            </div>
+            <input type="range" id="interval-slider" min="3" max="60" value="10" class="w-full h-1.5 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-indigo-500">
+          </div>
+        </div>
+
+        <!-- 視覺與遮罩設定 -->
+        <div class="space-y-3 pt-4 border-t border-white/10">
+          <h3 class="text-xs font-semibold text-indigo-400 uppercase tracking-wider">視覺與背景效果</h3>
+          
+          <div class="space-y-1">
+            <div class="flex justify-between text-xs text-gray-400">
+              <span>背景暗化遮罩</span>
+              <span id="overlay-val" class="text-indigo-300">40%</span>
+            </div>
+            <input type="range" id="overlay-slider" min="0" max="80" value="40" class="w-full h-1.5 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-indigo-500">
+          </div>
+
+          <div class="space-y-1">
+            <div class="flex justify-between text-xs text-gray-400">
+              <span>背景模糊程度</span>
+              <span id="blur-val" class="text-indigo-300">2 px</span>
+            </div>
+            <input type="range" id="blur-slider" min="0" max="20" value="2" class="w-full h-1.5 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-indigo-500">
+          </div>
+        </div>
+
+        <!-- 時鐘設定 -->
+        <div class="space-y-3 pt-4 border-t border-white/10">
+          <h3 class="text-xs font-semibold text-indigo-400 uppercase tracking-wider">時鐘格式</h3>
+          
+          <div class="flex items-center justify-between">
+            <label for="show-seconds-toggle" class="text-sm text-gray-200">顯示秒數</label>
+            <input type="checkbox" id="show-seconds-toggle" class="w-4 h-4 accent-indigo-500 rounded cursor-pointer" checked>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <label for="hour-12-toggle" class="text-sm text-gray-200">使用 12 小時制 (AM/PM)</label>
+            <input type="checkbox" id="hour-12-toggle" class="w-4 h-4 accent-indigo-500 rounded cursor-pointer">
+          </div>
+
+          <div class="flex items-center justify-between">
+            <label for="show-date-toggle" class="text-sm text-gray-200">顯示日期與星期</label>
+            <input type="checkbox" id="show-date-toggle" class="w-4 h-4 accent-indigo-500 rounded cursor-pointer" checked>
+          </div>
+        </div>
+
+        <!-- 圖片清單預覽與選擇 -->
+        <div class="space-y-3 pt-4 border-t border-white/10">
+          <div class="flex justify-between items-center">
+            <h3 class="text-xs font-semibold text-indigo-400 uppercase tracking-wider">桌布清單 (<span id="img-count">0</span>)</h3>
+            <button id="reload-csv-btn" class="text-xs text-gray-400 hover:text-white flex items-center space-x-1">
+              <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+              <span>重新載入</span>
+            </button>
+          </div>
+          <div id="thumbnail-grid" class="grid grid-cols-3 gap-2 max-h-48 overflow-y-auto p-1 bg-black/30 rounded-lg border border-white/5">
+            <!-- 動態生成縮圖 -->
+            <div class="col-span-3 text-center text-xs text-gray-500 py-4">讀取中...</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 底部說明 -->
+    <div class="pt-4 border-t border-white/10 text-xs text-gray-500 flex justify-between items-center">
+      <span>極簡明星桌布</span>
+      <span class="text-gray-600">v1.0</span>
+    </div>
+
+  </div>
+
+  <!-- JavaScript 邏輯 -->
+  <script>
+    // CSV 網址
+    const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQo5nTLWpr18wF_T1kLyK7sKFu1nodifIcdCoR3Ljr2dIZHPBZMfbWmp9AtL_IypjhbfXZNFBCKrr9M/pub?output=csv';
+
+    // 全局狀態
+    let imageUrls = [];
+    let currentIndex = 0;
+    let activeLayer = 1;
+    let autoPlayInterval = null;
+    
+    // 設定預設值
+    const settings = {
+      autoPlay: true,
+      interval: 10,
+      overlayOpacity: 40,
+      blurAmount: 2,
+      showSeconds: true,
+      use12Hour: false,
+      showDate: true
+    };
+
+    // DOM 元素引用
+    const bgLayer1 = document.getElementById('bg-layer-1');
+    const bgLayer2 = document.getElementById('bg-layer-2');
+    const overlay = document.getElementById('overlay');
+    const timeDisplay = document.getElementById('time-display');
+    const dateDisplay = document.getElementById('date-display');
+    const imageInfo = document.getElementById('image-info');
+    const gearBtn = document.getElementById('gear-btn');
+    const closeSettingsBtn = document.getElementById('close-settings-btn');
+    const settingsPanel = document.getElementById('settings-panel');
+    const thumbnailGrid = document.getElementById('thumbnail-grid');
+    const imgCountSpan = document.getElementById('img-count');
+
+    // 啟動時建立圖示
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      initClock();
+      fetchImageUrls();
+      bindEvents();
+    });
+
+    // 1. 處理 CSV 解析與圖片抓取
+    async function fetchImageUrls() {
+      try {
+        const response = await fetch(CSV_URL);
+        const csvText = await response.text();
+        
+        // 解析 CSV 行並清理網址
+        imageUrls = csvText
+          .split(/\r?\n/)
+          .map(line => line.trim().replace(/^"|"$/g, ''))
+          .filter(url => url.startsWith('http://') || url.startsWith('https://'));
+
+        if (imageUrls.length > 0) {
+          currentIndex = 0;
+          imgCountSpan.textContent = imageUrls.length;
+          updateBackground();
+          renderThumbnails();
+          resetAutoPlay();
+        } else {
+          imageInfo.textContent = '未找到有效圖片網址';
+          imageInfo.classList.remove('opacity-0');
+        }
+      } catch (error) {
+        console.error('下載或解析 CSV 失敗:', error);
+        imageInfo.textContent = '無法讀取圖片 CSV 資料';
+        imageInfo.classList.remove('opacity-0');
+      }
+    }
+
+    // 2. 背景圖片切換邏輯 (雙圖層雙重漸變)
+    function updateBackground() {
+      if (imageUrls.length === 0) return;
+
+      const url = imageUrls[currentIndex];
+      const nextLayer = activeLayer === 1 ? bgLayer2 : bgLayer1;
+      const currentLayer = activeLayer === 1 ? bgLayer1 : bgLayer2;
+
+      // 預載圖片後再漸變顯示
+      const img = new Image();
+      img.src = url;
+      img.onload = () => {
+        nextLayer.style.backgroundImage = `url('${url}')`;
+        nextLayer.classList.remove('opacity-0');
+        nextLayer.classList.add('opacity-100');
+        
+        currentLayer.classList.remove('opacity-100');
+        currentLayer.classList.add('opacity-0');
+
+        activeLayer = activeLayer === 1 ? 2 : 1;
+        
+        // 更新圖片資訊頁碼
+        imageInfo.textContent = `桌布 ${currentIndex + 1} / ${imageUrls.length}`;
+        imageInfo.classList.remove('opacity-0');
+        
+        // 更新縮圖高亮
+        updateActiveThumbnail();
+      };
+      img.onerror = () => {
+        console.warn(`圖片載入失敗: ${url}`);
+        // 若失敗則自動前進到下一張
+        nextImage();
+      };
+    }
+
+    function nextImage() {
+      if (imageUrls.length === 0) return;
+      currentIndex = (currentIndex + 1) % imageUrls.length;
+      updateBackground();
+    }
+
+    function prevImage() {
+      if (imageUrls.length === 0) return;
+      currentIndex = (currentIndex - 1 + imageUrls.length) % imageUrls.length;
+      updateBackground();
+    }
+
+    // 3. 時鐘邏輯
+    function initClock() {
+      function updateTime() {
+        const now = new Date();
+        
+        // 時間格式化
+        let hours = now.getHours();
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        let ampm = '';
+
+        if (settings.use12Hour) {
+          ampm = hours >= 12 ? ' PM' : ' AM';
+          hours = hours % 12 || 12;
+        }
+        
+        const hoursStr = String(hours).padStart(2, '0');
+        
+        if (settings.showSeconds) {
+          timeDisplay.textContent = `${hoursStr}:${minutes}:${seconds}${ampm}`;
+        } else {
+          timeDisplay.textContent = `${hoursStr}:${minutes}${ampm}`;
+        }
+
+        // 日期格式化
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const date = String(now.getDate()).padStart(2, '0');
+        const days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+        const dayName = days[now.getDay()];
+
+        dateDisplay.textContent = `${year} 年 ${month} 月 ${date} 日 ${dayName}`;
+      }
+
+      updateTime();
+      setInterval(updateTime, 1000);
+    }
+
+    // 4. 自動輪播計時器管理
+    function resetAutoPlay() {
+      if (autoPlayInterval) clearInterval(autoPlayInterval);
+      if (settings.autoPlay && imageUrls.length > 1) {
+        autoPlayInterval = setInterval(() => {
+          nextImage();
+        }, settings.interval * 1000);
+      }
+    }
+
+    // 5. 縮圖列表繪製
+    function renderThumbnails() {
+      thumbnailGrid.innerHTML = '';
+      imageUrls.forEach((url, idx) => {
+        const btn = document.createElement('button');
+        btn.className = `relative aspect-video rounded overflow-hidden border-2 transition-all cursor-pointer ${idx === currentIndex ? 'border-indigo-500 scale-95' : 'border-transparent opacity-70 hover:opacity-100'}`;
+        btn.dataset.index = idx;
+        
+        const img = document.createElement('img');
+        img.src = url;
+        img.className = 'w-full h-full object-cover';
+        img.loading = 'lazy';
+        
+        btn.appendChild(img);
+        btn.addEventListener('click', () => {
+          currentIndex = idx;
+          updateBackground();
+          resetAutoPlay();
+        });
+
+        thumbnailGrid.appendChild(btn);
+      });
+    }
+
+    function updateActiveThumbnail() {
+      const buttons = thumbnailGrid.querySelectorAll('button');
+      buttons.forEach((btn, idx) => {
+        if (idx === currentIndex) {
+          btn.classList.add('border-indigo-500', 'scale-95');
+          btn.classList.remove('border-transparent', 'opacity-70');
+        } else {
+          btn.classList.remove('border-indigo-500', 'scale-95');
+          btn.classList.add('border-transparent', 'opacity-70');
+        }
+      });
+    }
+
+    // 6. 事件繫結
+    function bindEvents() {
+      // 側邊欄開關
+      gearBtn.addEventListener('click', () => {
+        settingsPanel.classList.remove('translate-x-full');
+      });
+
+      closeSettingsBtn.addEventListener('click', () => {
+        settingsPanel.classList.add('translate-x-full');
+      });
+
+      // 上/下一張按鈕
+      document.getElementById('next-btn').addEventListener('click', () => {
+        nextImage();
+        resetAutoPlay();
+      });
+
+      document.getElementById('prev-btn').addEventListener('click', () => {
+        prevImage();
+        resetAutoPlay();
+      });
+
+      // 自動輪播 Toggle
+      const autoPlayToggle = document.getElementById('auto-play-toggle');
+      autoPlayToggle.addEventListener('change', (e) => {
+        settings.autoPlay = e.target.checked;
+        resetAutoPlay();
+      });
+
+      // 輪播間隔 Slider
+      const intervalSlider = document.getElementById('interval-slider');
+      const intervalVal = document.getElementById('interval-val');
+      intervalSlider.addEventListener('input', (e) => {
+        settings.interval = parseInt(e.target.value);
+        intervalVal.textContent = `${settings.interval} 秒`;
+        resetAutoPlay();
+      });
+
+      // 遮罩透明度 Slider
+      const overlaySlider = document.getElementById('overlay-slider');
+      const overlayVal = document.getElementById('overlay-val');
+      overlaySlider.addEventListener('input', (e) => {
+        settings.overlayOpacity = parseInt(e.target.value);
+        overlayVal.textContent = `${settings.overlayOpacity}%`;
+        overlay.style.backgroundColor = `rgba(0, 0, 0, ${settings.overlayOpacity / 100})`;
+      });
+
+      // 模糊程度 Slider
+      const blurSlider = document.getElementById('blur-slider');
+      const blurVal = document.getElementById('blur-val');
+      blurSlider.addEventListener('input', (e) => {
+        settings.blurAmount = parseInt(e.target.value);
+        blurVal.textContent = `${settings.blurAmount} px`;
+        overlay.style.backdropFilter = `blur(${settings.blurAmount}px)`;
+      });
+
+      // 顯示秒數 Toggle
+      document.getElementById('show-seconds-toggle').addEventListener('change', (e) => {
+        settings.showSeconds = e.target.checked;
+      });
+
+      // 12小時制 Toggle
+      document.getElementById('hour-12-toggle').addEventListener('change', (e) => {
+        settings.use12Hour = e.target.checked;
+      });
+
+      // 顯示日期 Toggle
+      document.getElementById('show-date-toggle').addEventListener('change', (e) => {
+        settings.showDate = e.target.checked;
+        dateDisplay.style.display = settings.showDate ? 'block' : 'none';
+      });
+
+      // 重新讀取 CSV 按鈕
+      document.getElementById('reload-csv-btn').addEventListener('click', () => {
+        fetchImageUrls();
+      });
+
+      // 鍵盤左右鍵切換圖片
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') {
+          nextImage();
+          resetAutoPlay();
+        } else if (e.key === 'ArrowLeft') {
+          prevImage();
+          resetAutoPlay();
+        }
+      });
+    }
+  </script>
+</body>
+</html>
